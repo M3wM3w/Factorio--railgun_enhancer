@@ -1,0 +1,11 @@
+{
+  "name": "railgun_enhancer",
+  "version": "0.1.0",
+  "factorio_version": "0.16",
+  "title": "Railgun Enhancer",
+  "author": "MewMew",
+  "contact": "",
+  "homepage": "",
+  "description": "Enhances the railgun and adds some visual effects.",
+  "dependencies": ["base >= 0.16.0"]
+}
