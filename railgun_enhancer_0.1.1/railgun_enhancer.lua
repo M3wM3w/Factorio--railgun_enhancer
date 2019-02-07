@@ -16,6 +16,8 @@ local biological_target_types = {
 
 local function create_visuals(source_entity, target_entity)
 	if not additional_visual_effects then return end
+	if not source_entity.valid then return end
+	if not target_entity.valid then return end
 	local surface = target_entity.surface		
 	surface.create_entity({name = "water-splash", position = target_entity.position})
 	if biological_target_types[target_entity.type] then
@@ -47,6 +49,7 @@ end
 
 local function do_splash_damage_around_entity(source_entity, player)
 	if not do_splash_damage then return end
+	if not source_entity.valid then return end	
 	local research_damage_bonus = player.force.get_ammo_damage_modifier("laser-turret") + 1
 	local research_splash_radius_bonus = player.force.get_ammo_damage_modifier("laser-turret") * 0.5
 	local splash_area = {
@@ -72,6 +75,7 @@ end
 
 script.on_event(defines.events.on_entity_damaged, function(event)
 	if not event.cause then return end
+	if not event.cause.valid then return end
 	if event.cause.name ~= "player" then return end
 	if event.damage_type.name ~= "physical" then return end
 	if event.original_damage_amount ~= 100 then return end
@@ -90,11 +94,4 @@ script.on_event(defines.events.on_entity_damaged, function(event)
 	local research_damage_bonus = player.force.get_ammo_damage_modifier("laser-turret") + 1	
 	local damage = math_random(math.ceil(damage_min * research_damage_bonus), math.ceil(damage_max * research_damage_bonus))
 	event.entity.damage(damage, player.force, "physical")	
-end)
-
-script.on_event(defines.events.on_research_finished, function(event)
-	if event.research.name == "advanced-electronics-2" then		
-		event.research.force.recipes["Railgun"].enabled = true
-		event.research.force.recipes["Railgun Dart"].enabled = true
-	end
 end)
